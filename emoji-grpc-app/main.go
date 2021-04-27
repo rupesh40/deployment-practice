@@ -5,7 +5,7 @@ import (
 	"log"
 	"net"
 
-	"go-grpc/proto"
+	"github.com/rupesh40/docker-practice-go/emoji-grpc-app/proto"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"

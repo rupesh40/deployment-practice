@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"go-grpc/proto"
+	"github.com/rupesh40/docker-practice-go/emoji-grpc-app/proto"
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"

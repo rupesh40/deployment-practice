@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloworld-service
+spec:
+  type: NodePort
+  selector:
+    app: MyApp
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30900
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloworld-depl
+spec:
+  selector:
+    matchLabels:
+      app: helloworld-depl
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: helloworld-depl
+    spec:
+      containers:
+      - name: helloworld
+        image: rupesh40/hello-w:v3
+        ports:
+        - containerPort: 8080
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: helloworld-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 8080
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: helloworld-vs
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - helloworld-gateway
+  http:
+  - match:
+    - uri:
+        exact: /
+    route:
+    - destination:
+        host: helloworld-service
+        port:
+          number: 30900

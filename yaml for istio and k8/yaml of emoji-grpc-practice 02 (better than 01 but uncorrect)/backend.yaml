@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  labels:
+    app: backend-service
+spec:
+  type: ClusterIP
+  selector:
+    app: backend
+  ports:
+  - name: grpc
+    port: 8000
+    targetPort: 9000
+    protocol: TCP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  labels:
+  app: backend
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+        version: v1
+    spec:
+      containers:
+      - name: backend
+        image: rupesh40/istio-grpc-new:v3
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9000

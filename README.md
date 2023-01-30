@@ -1,4 +1,4 @@
-# Deployment scripts 
+# Deployment Configuration
 
 - DockerFiles for practice
 - Kubernetes configiration
